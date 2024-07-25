@@ -1,0 +1,30 @@
+@import url("/node_modules/bootstrap-icons/font/bootstrap-icons.css");
+@import 'custom';
+
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+.main {
+    margin-bottom: 775px;
+}
+
+.action-service-btn {
+    display: flex;
+    justify-content: space-around;
+}
+
+.bi-pencil-square,
+.bi-trash3 {
+    color: $primary;
+    opacity: 1;
+
+}
+
+.SendContact {
+    display: flex;
+    justify-content: center;
+}
+
