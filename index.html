@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="./scss/main.css">
     <link rel="stylesheet" href="./scss/main.scss">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"> <!-- Utilisation du CDN pour Bootstrap Icons -->
+    <link href="/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
 </head>
 <body>
 <header>
@@ -27,14 +29,17 @@
                     <li class="nav-item mx-2">
                         <a class="nav-link" href="/contact">Contact</a>
                     </li>
-                    <li class="nav-item mx-2">
-                        <a class="nav-link" href="/signin">Espace pour les collaborateurs</a>
+                    <li class="nav-item">
+                        <a class="nav-link active text-dark" aria-disabled="true" href="/signin" data-show="disconnected">ESPACE EMPLOYE</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link active text-dark" id="btnSignout" data-show="connected">DECONNEXION</button>
                     </li>
                 </ul>
             </div>
       </nav>
 </header>
-<main id="main-page">
+<main id="main-page" class="main">
     <!-- Contenu de ma page -->
 </main>
 <footer class="text-center">
@@ -57,7 +62,6 @@
     </div>
 </footer>
 
-<script src="js/index.js" type="module"></script>
 <script src="js/script.js"></script>
 <script src="Router/router.js" type="module"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

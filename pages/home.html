@@ -1,2 +1,53 @@
-<p class="text-center">Test du system de routage</p>
-<button class="btn btn-primary">test</button>
+
+
+<div class="text-dark d-flex flex-column align-items-center">
+    <h3 class="m-4">Les avis de nos visiteurs</h3>
+    <ol id="GetAvis" class="container overflow-scroll" style="height: 550px;"></ol>
+    <button type="button" class="btn btn-primary m-5" data-bs-toggle="modal" data-bs-target="#EditionService">Laisser un avis</button>
+</div>
+</main>
+
+<!-- Modal -->
+<div class="modal fade" id="EditionService" tabindex="-1" aria-labelledby="EditionServiceLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Laisser un avis</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="avisForm">
+                <div class="mb-3">
+                    <label for="pseudo" class="form-label">Pseudo</label>
+                    <input type="text" class="form-control" id="pseudo" required>
+                </div>
+                <div class="mb-3">
+                    <label for="commentaire" class="form-label">Commentaire</label>
+                    <textarea class="form-control" id="commentaire" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="MessageAvis" tabindex="-1" aria-labelledby="MessageAvisLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Validation de votre avis</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p>Merci pour votre avis. Ce dernier va être soumis à validation par nos équipes avant d'être publié.</p>
+        </div>
+        <div class="modal-footer">
+            <a href="/">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Revenir à l'accueil</button>
+            </a>
+        </div>
+    </div>
+</div>
+</div>

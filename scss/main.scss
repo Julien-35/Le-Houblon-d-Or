@@ -7,24 +7,15 @@ html {
     min-height: 100%;
 }
 
+
+footer {
+    padding: 15px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: $secondary;
+}
+
 .main {
-    margin-bottom: 775px;
+    margin-bottom: 5775px;
 }
-
-.action-service-btn {
-    display: flex;
-    justify-content: space-around;
-}
-
-.bi-pencil-square,
-.bi-trash3 {
-    color: $primary;
-    opacity: 1;
-
-}
-
-.SendContact {
-    display: flex;
-    justify-content: center;
-}
-
