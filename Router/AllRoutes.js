@@ -7,7 +7,7 @@ export const allRoutes = [
     new Route("/evenement", "Accueil", "pages/evenement.html"),
     new Route("/contact", "Accueil", "pages/contact.html"),
     new Route("/admin", "Accueil", "pages/admin.html"),
-    new Route("/employe", "Accueil", "pages/employe.html"),
+    new Route("/employe", "Accueil", "pages/employe.html", [] , "js/employe.js"),
     new Route("/signin", "Accueil", "pages/signin.html"),];
 
 
