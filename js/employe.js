@@ -2,12 +2,12 @@ const avis = document.getElementById("avis");
 
 if (document.readyState === "loading") {
   // Loading hasn't finished yet
-  avis.addEventListener('DOMContentLoaded', voirAvis);
+  avis.addEventListener('DOMContentLoaded', voirService);
 } else {
-  voirAvis();
+  voirService();
 }
 
-async function voirAvis() {
+async function voirService() {
   const myHeaders = new Headers();
   myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
   myHeaders.append("Content-Type", "application/json");
@@ -19,14 +19,13 @@ async function voirAvis() {
   };
 
   try {
-      const response = await fetch("http://localhost:8000/api/avis/get", requestOptions);
+      const response = await fetch("http://localhost:8000/api/service/get", requestOptions);
       if (!response.ok) throw new Error('Failed to fetch avis');
       
       const result = await response.json();
       let content = '';
       result.forEach(item => {
-          const buttonText = item.isVisible ? "Cacher l'avis" : "Afficher l'avis";
-          const buttonClass = item.isVisible ? 'btn btn-secondary toggle-avis-button' : 'btn btn-success toggle-avis-button';
+
           content += `
               <ol class="list-group">
                   <li class="list-group-item justify-content-between align-items-start text-dark">
