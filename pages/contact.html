@@ -1,0 +1,55 @@
+<div class="container text-center">
+    <h3 class="pt-5">NOUS TROUVER</h3>
+    <p class="py-5">L'adresse du Houblon d'Or : <br> Avenue de de la soif <br> 75000 Paris</p>
+    
+    
+</div>
+
+<div class="text-center">
+    <h3>Nous contacter</h3>
+    <p>Pour toutes questions, merci de remplir le formulaire ci-desosus.</p>
+</div>
+
+
+<form id="contactForm" class="container text-center border rounded py-5">
+    <div class="form-group">
+        <label for="email" class="pb-3">Votre adresse mail</label>
+        <input type="email" class="form-control" id="email" placeholder="contact@houblon.com" required>
+    </div>
+    <div class="form-group py-5">
+        <label for="raison" class="pb-3">Raison de votre demande de contact</label>
+        <select class="form-control" id="raison" required>
+            <option>Location</option>
+            <option>Fournisseur</option>
+            <option>Evenement</option>
+            <option>Information</option>
+            <option>Autre</option>
+        </select>
+    </div>
+    <div class="form-group py-5">
+        <label for="message" class="pb-3">Votre message</label>
+        <textarea class="form-control" id="message" rows="6" required></textarea>
+    </div>
+    <button type="button" class="btn btn-primary" id="submitContactForm" data-bs-toggle="modal" data-bs-target="#ModalContact">Envoyer</button>
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalContact" tabindex="-1" aria-labelledby="ContactModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ContactModalLabel">Confirmation</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Merci pour votre demande de contact, nos équipes vont revenir vers vous sur votre adresse mail.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="/"> <button type="button" class="btn btn-primary">Retour page d'accueil</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
