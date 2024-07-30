@@ -2,7 +2,7 @@ const evenement = document.getElementById("GetEvenement");
 
 if (document.readyState === "loading") {
     // Loading hasn't finished yet
-    service.addEventListener('DOMContentLoaded', voirEvenement);
+    evenement.addEventListener('DOMContentLoaded', voirEvenement);
   } else {
     voirEvenement();
   }
