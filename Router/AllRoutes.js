@@ -9,7 +9,8 @@ export const allRoutes = [
     new Route("/contact", "Accueil", "pages/contact.html", [] , "js/contact.js"),
     new Route("/admin", "Accueil", "pages/admin.html", [] , ""),
     new Route("/employe", "Accueil", "pages/employe.html", [] , "js/employe.js"),
-    new Route("/signin", "Accueil", "pages/signin.html"),];
+    new Route("/signin", "Accueil", "pages/signin.html", [] , "js/signin.js"),
+];
 
 
 
