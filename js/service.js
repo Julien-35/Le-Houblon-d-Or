@@ -2,7 +2,7 @@ const service = document.getElementById("GetService");
 
 if (document.readyState === "loading") {
     // Loading hasn't finished yet
-    service.addEventListener('DOMContentLoaded', GetAvis);
+    service.addEventListener('DOMContentLoaded', GetService);
   } else {
     voirService();
   }
