@@ -32,7 +32,8 @@ async function voirBiere() {
                 content += `                            
                     <div>
                         <h1>${item.nom}</h1>
-                        <p>${item.origine}</p>                                 
+                        <p>${item.origine}</p>         
+                        <p>${item.categorie}</p>                                                      
                         <p>${item.description}</p>
                         <p>${item.taux_alcool}</p>
                         <img src="data:image/jpeg;base64,${item.image_data}" class="rounded img-fluid" style="width:auto; height: 250px;">
