@@ -1,15 +1,38 @@
-const avis = document.getElementById("avis");
+const avis = document.getElementById("GetAvis");
 
 if (document.readyState === "loading") {
   // Loading hasn't finished yet
-  avis.addEventListener('DOMContentLoaded', voirService);
+  avis.addEventListener('DOMContentLoaded', voirAvis);
 } else {
-  voirService();
+  voirAvis();
 }
 
-async function voirService() {
+function getToken() {
+  return localStorage.getItem('apiToken');
+}
+
+async function fetchData(url, headers) {
+  const requestOptions = {
+    method: "GET",
+    headers: headers,
+    redirect: "follow",
+    mode: "cors",
+  };
+
+  try {
+    const response = await fetch(url, requestOptions);
+    if (!response.ok) throw new Error("Impossible de récupérer les informations");
+    return response.json();
+  } catch (error) {
+    console.error("Fetch Error:", error);
+    throw error;
+  }
+}
+
+
+async function voirAvis() {
   const myHeaders = new Headers();
-  myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+  myHeaders.append("X-AUTH-TOKEN", getToken());
   myHeaders.append("Content-Type", "application/json");
 
   const requestOptions = {
@@ -19,13 +42,14 @@ async function voirService() {
   };
 
   try {
-      const response = await fetch("https://127.0.0.1:8000/api/service/get", requestOptions);
+      const response = await fetch("https://127.0.0.1:8000/api/avis/get", requestOptions);
       if (!response.ok) throw new Error('Failed to fetch avis');
       
       const result = await response.json();
       let content = '';
       result.forEach(item => {
-
+          const buttonText = item.isVisible ? "Cacher l'avis" : "Afficher l'avis";
+          const buttonClass = item.isVisible ? 'btn btn-danger toggle-avis-button' : 'btn btn-success toggle-avis-button';
           content += `
               <ol class="list-group">
                   <li class="list-group-item justify-content-between align-items-start text-dark">
@@ -36,15 +60,11 @@ async function voirService() {
                       <button class="${buttonClass}" data-avis-id="${item.id}" data-avis-visible="${item.isVisible}">
                           ${buttonText}
                       </button>
-                      <button class="btn btn-danger delete-avis-button" data-avis-id="${item.id}">
-                          Supprimer
-                      </button>
                   </li>
               </ol>`;
       });
       document.getElementById("GetAvis").innerHTML = content;
 
-      // Ajouter les gestionnaires d'événements pour les boutons de visibilité
       document.querySelectorAll('.toggle-avis-button').forEach(button => {
           button.addEventListener('click', async () => {
               const avisId = button.getAttribute('data-avis-id');
@@ -75,35 +95,9 @@ async function voirService() {
           });
       });
 
-      // Ajouter les gestionnaires d'événements pour les boutons de suppression
-      document.querySelectorAll('.delete-avis-button').forEach(button => {
-          button.addEventListener('click', async () => {
-              const avisId = button.getAttribute('data-avis-id');
-
-              try {
-                  const deleteRequestOptions = {
-                      method: 'DELETE',
-                      headers: {
-                          'Content-Type': 'application/json',
-                          'X-AUTH-TOKEN': '38f1c426526d1aeebb80d777b8733f1ef09fc484'
-                      }
-                  };
-
-                  const response = await fetch(`https://127.0.0.1:8000/api/avis/${avisId}`, deleteRequestOptions);
-                  if (!response.ok) throw new Error(`Echec pour la suppression de l'avis ${avisId}`);
-
-                  // Recharger la liste des avis après la suppression
-                  voirAvis();
-
-              } catch (error) {
-                  console.error('Error:', error);
-                  alert(`An error occurred while deleting avis ${avisId}`);
-              }
-          });
-      });
-
   } catch (error) {
       console.error('Error:', error);
       console.log("Impossible de récupérer les informations d'avis");
   }
 }
+

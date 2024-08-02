@@ -50,16 +50,29 @@
 
 
 
-<form class="container text-dark fs-4" id="formulaireInscription">
+
+     <!--Modal pour afficher les services-->
+     <p class="accordion-header col-12 ">
+      <button class="btn btn-primary collapsed m-2" type="button" data-bs-toggle="collapse" data-bs-target="#InscrireUtilisateur" aria-expanded="false" aria-controls="InscrireUtilisateur">
+Inscrire un Utilisateur      </button></p>
+
+<!-- Conteneur des services via la modal -->
+<div class="collapse collapse-horizontal" id="InscrireUtilisateur">
+
+
+  <div class="container text-center d-flex justify-content-evenly border border-primary rounded ">
+
+
+<form class="container fs-4" id="formulaireInscription">
   <div class="m-5">
     <!-- Inscription prénom -->
-    <label for="PrenomInput" class="form-label">Votre prénom</label>
+    <label for="PrenomInput" class="form-label">Prénom</label>
     <input type="text" class="form-control" id="PrenomInput" placeholder="John" name="prenom">
   </div>
 
   <div class="m-5">
     <!-- Inscription nom -->
-    <label for="NomInput" class="form-label">Votre nom</label>
+    <label for="NomInput" class="form-label">Nom</label>
     <input type="text" class="form-control" id="NomInput" placeholder="Doe" name="nom">
   </div>
 
@@ -92,4 +105,4 @@
     <button type="submit" class="btn btn-primary ms-5 mb-5" id="btnInscription" disabled>Inscription</button>
   </div>
 </form>
-
+</div>
