@@ -19,7 +19,7 @@ async function voirService() {
   };
 
   try {
-      const response = await fetch("http://localhost:8000/api/service/get", requestOptions);
+      const response = await fetch("https://127.0.0.1:8000/api/service/get", requestOptions);
       if (!response.ok) throw new Error('Failed to fetch avis');
       
       const result = await response.json();
@@ -61,7 +61,7 @@ async function voirService() {
                       body: JSON.stringify({ isVisible: newValue })
                   };
 
-                  const response = await fetch(`http://localhost:8000/api/avis/${avisId}`, putRequestOptions);
+                  const response = await fetch(`https://127.0.0.1:8000/api/avis/${avisId}`, putRequestOptions);
                   if (!response.ok) throw new Error(`Failed to toggle visibility for avis ${avisId}`);
 
                   button.setAttribute('data-avis-visible', newValue);
@@ -89,7 +89,7 @@ async function voirService() {
                       }
                   };
 
-                  const response = await fetch(`http://localhost:8000/api/avis/${avisId}`, deleteRequestOptions);
+                  const response = await fetch(`https://127.0.0.1:8000/api/avis/${avisId}`, deleteRequestOptions);
                   if (!response.ok) throw new Error(`Echec pour la suppression de l'avis ${avisId}`);
 
                   // Recharger la liste des avis après la suppression

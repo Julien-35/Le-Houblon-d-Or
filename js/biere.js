@@ -21,7 +21,7 @@ async function voirBiere() {
     };
   
     try {
-        const response = await fetch("http://localhost:8000/api/biere/get", requestOptions);
+        const response = await fetch("https://127.0.0.1:8000/api/biere/get", requestOptions);
         if (!response.ok) {
             throw new Error('Echec concernant le Fetch de biere');
         }

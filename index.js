@@ -13,16 +13,16 @@ document.addEventListener('DOMContentLoaded', voirHoraire);
 async function voirHoraire() {
     const myHeaders = new Headers();
     myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
-    myHeaders.append("Content-Type", "application/json");
+    // myHeaders.append("Content-Type", "application/json");
   
     const requestOptions = {
         method: "GET",
         headers: myHeaders,
-        redirect: "follow",
+        mode:"cors"
     };
   
     try {
-        const response = await fetch("http://localhost:8000/api/horaire/get", requestOptions);
+        const response = await fetch("https://127.0.0.1:8000/api/horaire/get", requestOptions);
         if (!response.ok) {
             throw new Error('Echec concernant le Fetch de horaire');
         }

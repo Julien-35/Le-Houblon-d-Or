@@ -18,10 +18,11 @@ async function voirAvis() {
         method: "GET",
         headers: myHeaders,
         redirect: "follow",
+        mode:"cors"
     };
   
     try {
-        const response = await fetch("http://localhost:8000/api/avis/get", requestOptions);
+        const response = await fetch("https://127.0.0.1:8000/api/avis/get", requestOptions);
         if (!response.ok) {
             throw new Error('Failed to fetch avis');
         }
@@ -72,7 +73,7 @@ document.getElementById('avisForm').addEventListener('submit', async function(ev
     };
   
     try {
-        const response = await fetch("http://localhost:8000/api/avis", requestOptions);
+        const response = await fetch("https://127.0.0.1:8000/api/avis", requestOptions);
         if (!response.ok) {
             throw new Error('Failed to send avis');
         }

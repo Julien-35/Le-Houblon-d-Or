@@ -80,8 +80,8 @@ function showAndHideElementsForRoles() {
             case 'employe':
                 shouldShow = userRole === 'ROLE_EMPLOYE';
                 break;
-            case 'veterinaire':
-                shouldShow = userRole === 'ROLE_VETERINAIRE';
+            case 'stock':
+                shouldShow = userRole === 'ROLE_STOCK';
                 break;
         }
         

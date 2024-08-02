@@ -57,7 +57,7 @@ async function createService(nom, description) {
     };
 
     try {
-        const response = await fetch(`http://localhost:8000/api/service`, requestOptions);
+        const response = await fetch(`https://127.0.0.1:8000/api/service`, requestOptions);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -107,7 +107,7 @@ async function updateService(serviceId, nom, description) {
     };
 
     try {
-        const response = await fetch(`http://localhost:8000/api/service/${serviceId}`, requestOptions);
+        const response = await fetch(`https://127.0.0.1:8000/api/service/${serviceId}`, requestOptions);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -130,7 +130,7 @@ async function voirService() {
     };
 
     try {
-        const response = await fetch("http://localhost:8000/api/service/get", requestOptions);
+        const response = await fetch("https://127.0.0.1:8000/api/service/get", requestOptions);
         if (!response.ok) {
             throw new Error('Echec concernant le Fetch de service');
         }
@@ -171,7 +171,7 @@ async function supprimerService(serviceId) {
     };
 
     try {
-        const response = await fetch(`http://localhost:8000/api/service/${serviceId}`, requestOptions);
+        const response = await fetch(`https://127.0.0.1:8000/api/service/${serviceId}`, requestOptions);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -206,7 +206,7 @@ async function supprimerService(serviceId) {
     };
 
     try {
-        const response = await fetch(`http://localhost:8000/api/service/${serviceId}`, requestOptions);
+        const response = await fetch(`https://127.0.0.1:8000/api/service/${serviceId}`, requestOptions);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -220,3 +220,62 @@ async function supprimerService(serviceId) {
 
 // fin des fonctions services
 
+function InscrireUtilisateur(event) {
+    event.preventDefault();
+
+    let dataForm = new FormData(FormInscription);
+    let userData = {
+        "prenom": dataForm.get("prenom"),
+        "nom": dataForm.get("nom"),
+        "email": dataForm.get("email"),
+        "password": dataForm.get("password"),
+        "role": dataForm.get("role")
+    };
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    let raw = JSON.stringify(userData);
+
+    let requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+    };
+
+    fetch("https://127.0.0.1:8000/api/registration", requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(errorText => {
+                    throw new Error(`Erreur ${response.status}: ${errorText}`);
+                });
+            }
+            return response.json();
+        })
+        .then(result => {
+            console.log("Inscription réussie:", result);
+
+            let templateParams = {
+                message: `Bienvenue ${userData.prenom} ${userData.nom} ! 
+                
+                Votre compte Arcadia vient d'être créé.`,
+                from_name: `${userData.prenom} ${userData.nom}`,
+                to_email: userData.email,
+                
+            };
+
+            emailjs.send('service_veuyjvv', 'templateId', templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    alert('Inscription réussie et e-mail envoyé!');
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    alert('Inscription réussie mais échec de l\'envoi du message.');
+                });
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors de l\'inscription. Veuillez vérifier les données.');
+        });
+}

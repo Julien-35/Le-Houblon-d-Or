@@ -11,7 +11,7 @@ document.getElementById('submitContactForm').addEventListener('click', async () 
     };
 
     try {
-        const response = await fetch('http://localhost:8000/api/contact/post', {
+        const response = await fetch('https://127.0.0.1:8000/api/contact/post', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
