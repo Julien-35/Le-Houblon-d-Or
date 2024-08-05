@@ -29,8 +29,8 @@ async function voirService() {
   
         let content = '';
         result.forEach(item => {
-                content += `                            
-                        <div>
+                content += `                          
+                        <div class="p-5">
                         <h1>${item.nom}</h1>
                         <p>${item.description}</p>
                         </div> `;

@@ -9,7 +9,7 @@ if (document.readyState === "loading") {
 
 
 
-  document.getElementById('submitContactForm').addEventListener('click', async () => {
+  document.getElementById('ajoutService').addEventListener('click', async () => {
     const serviceId = document.getElementById('serviceId').value;
     if (serviceId) {
         await modifierService(serviceId);
@@ -368,3 +368,44 @@ async function InscrireUtilisateur(event) {
             alert('Erreur lors de l\'inscription. Veuillez vérifier les données.');
         });
 }
+
+
+
+document.getElementById('imageForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Empêche la soumission par défaut du formulaire
+
+    const nom = document.getElementById('nom').value;
+    const description = document.getElementById('description').value;
+    const imageInput = document.getElementById('image').files[0];
+
+    const reader = new FileReader();
+    reader.onloadend = function() {
+        const imageData = reader.result.split(',')[1]; // Encodage de l'image en base64
+
+        const myHeaders = new Headers();
+        myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            nom: nom,
+            description: description,
+            image_data: imageData
+        });
+
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("https://127.0.0.1:8000/api/evenement", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+    };
+
+    if (imageInput) {
+        reader.readAsDataURL(imageInput);
+    }
+});
