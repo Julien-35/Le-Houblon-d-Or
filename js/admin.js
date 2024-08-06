@@ -159,29 +159,6 @@ function editService(id, nom, description) {
     document.getElementById('description').value = description;
 }
 
-async function supprimerService(serviceId) {
-    const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
-    myHeaders.append("Content-Type", "application/json");
-
-    const requestOptions = {
-        method: "DELETE",
-        headers: myHeaders,
-        redirect: "follow"
-    };
-
-    try {
-        const response = await fetch(`https://127.0.0.1:8000/api/service/${serviceId}`, requestOptions);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const result = await response.text();
-        console.log(result);
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
 
 function validerSuppression(serviceId) {
     // Affiche la modal de confirmation
@@ -370,42 +347,440 @@ async function InscrireUtilisateur(event) {
 }
 
 
+// Methods CRUD pour les bières 
 
-document.getElementById('imageForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Empêche la soumission par défaut du formulaire
+const biere=document.getElementById("GetBiere");
 
-    const nom = document.getElementById('nom').value;
-    const description = document.getElementById('description').value;
-    const imageInput = document.getElementById('image').files[0];
+if (document.readyState === "loading") {
+    // Loading hasn't finished yet
+    biere.addEventListener('DOMContentLoaded', voirBiere);
+  } else {
+    voirBiere();
+  }
 
-    const reader = new FileReader();
-    reader.onloadend = function() {
-        const imageData = reader.result.split(',')[1]; // Encodage de l'image en base64
 
-        const myHeaders = new Headers();
-        myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
-        myHeaders.append("Content-Type", "application/json");
 
-        const raw = JSON.stringify({
-            nom: nom,
-            description: description,
-            image_data: imageData
-        });
+  document.addEventListener('DOMContentLoaded', voirBiere);
 
-        const requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow'
-        };
-
-        fetch("https://127.0.0.1:8000/api/evenement", requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
-    };
-
-    if (imageInput) {
-        reader.readAsDataURL(imageInput);
+document.getElementById('ajoutBiere').addEventListener('click', async () => {
+    const biereId = document.getElementById('biereId').value;
+    if (biereId) {
+        await modifierBiere(biereId);
+    } else {
+        await creerUneBiere();
     }
 });
+
+async function creerUneBiere() {
+    const form = document.getElementById("postBiereForm");
+    const formData = new FormData(form);
+    const nom = formData.get('nomBiere');
+    const description = formData.get('descriptionBiere');
+    const taux_alcool = formData.get('taux_alcool');
+    const image_data = await getBase64Image(formData.get('imageBiere'));
+
+    if (!nom || !description || !taux_alcool  || !image_data) {
+        alert("Tous les champs doivent être remplis.");
+        return;
+    }
+
+    try {
+        await createBiere(nom, description, taux_alcool , image_data);
+        alert("La bière a été créée avec succès.");
+        voirBiere();
+    } catch (error) {
+        alert("Erreur lors de la création de la bière.");
+        console.error(error);
+    }
+}
+
+async function createBiere(nom, description, taux_alcool , image_data) {
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+        "nom": nom,
+        "description": description,
+        "taux_alcool": taux_alcool,
+        "image_data": image_data,
+    });
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+    };
+
+    try {
+        const response = await fetch("https://127.0.0.1:8000/api/biere", requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.text();
+        console.log(result);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function modifierBiere(biereId) {
+    const form = document.getElementById("postBiereForm");
+    const formData = new FormData(form);
+    const nom = formData.get("nomBiere");
+    const description = formData.get("descriptionBiere");
+    const taux_alcool = formData.get("taux_alcool");
+    const image_data = await getBase64Image(formData.get("imageBiere"));
+
+    if (!nom || !description || !taux_alcool  || !image_data) {
+        alert("Tous les champs doivent être remplis.");
+        return;
+    }
+
+    try {
+        await updateBiere(biereId, nom, description, taux_alcool , image_data);
+        alert("La bière a été modifiée avec succès.");
+        voirBiere();
+    } catch (error) {
+        alert("Erreur lors de la modification de la bière.");
+        console.error(error);
+    }
+}
+
+async function updateBiere(biereId, nom, description, taux_alcool , image_data) {
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+        "nom": nom,
+        "description": description,
+        "taux_alcool": taux_alcool,
+        "image_data": image_data,
+    });
+
+    const requestOptions = {
+        method: "PUT",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+    };
+
+    try {
+        const response = await fetch(`https://127.0.0.1:8000/api/biere/${biereId}`, requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.text();
+        console.log(result);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function voirBiere() {
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("Content-Type", "application/json");
+
+    const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+    };
+
+    try {
+        const response = await fetch("https://127.0.0.1:8000/api/biere/get", requestOptions);
+        if (!response.ok) {
+            throw new Error('Echec concernant le Fetch de biere');
+        }
+        const result = await response.json();
+
+        let content = '';
+        result.forEach(item => {
+            content += `
+                <div class="p-5">
+                    <h1>${escapeHtml(item.nom)}</h1>
+                    <p>${escapeHtml(item.description)}</p>
+                    <p>${escapeHtml(item.taux_alcool)}</p>
+                    <img src="data:image/jpeg;base64,${escapeHtml(item.image_data)}" class="rounded img-fluid w-50" alt="Image de ${escapeHtml(item.nom)}">
+                    <div class="py-2">
+                    <button class="btn btn-primary" onclick="editBiere('${item.id}', \`${escapeHtml(item.nom)}\`, \`${escapeHtml(item.description)}\`, \`${escapeHtml(item.taux_alcool)}\`, '${item.image_data}')">Modifier</button>
+                    <button class="btn btn-danger" onclick="validerSuppression('${item.id}')">Supprimer</button>
+                    </div>
+                </div>`;
+        });
+        document.getElementById("GetBiere").innerHTML = content;
+    } catch (error) {
+        console.error('Error:', error);
+        console.log("Impossible de récupérer les informations des événements");
+    }
+}
+
+function editBiere(id, nom, description, taux_alcool ,image_data) {
+    document.getElementById('biereId').value = id;
+    document.getElementById('nomBiere').value = nom;
+    document.getElementById('descriptionBiere').value = description;
+    document.getElementById('taux_alcool').value = taux_alcool;
+}
+
+function validerSuppression(biereId) {
+    const deleteModal = new bootstrap.Modal(document.getElementById('validerSuppressionModal'));
+    document.getElementById('validerSuppressionButton').onclick = async () => {
+        await supprimerBiere(biereId);
+        deleteModal.hide();
+        voirBiere(); 
+    };
+    deleteModal.show();
+}
+
+async function supprimerBiere(biereId) {
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("Content-Type", "application/json");
+
+    const requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+
+    try {
+        const response = await fetch(`https://127.0.0.1:8000/api/biere/${biereId}`, requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.text();
+        console.log(result);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// Fonction utilitaire pour convertir une image en base64
+function getBase64Image(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = error => reject(error);
+    });
+}
+
+
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+// début fonction des évênements 
+
+
+
+const evenement=document.getElementById("GetEvenement");
+
+if (document.readyState === "loading") {
+    // Loading hasn't finished yet
+    evenement.addEventListener('DOMContentLoaded', voirEvenement);
+  } else {
+    voirEvenement();
+  }
+
+
+
+document.addEventListener('DOMContentLoaded', voirEvenement);
+
+document.getElementById('ajoutEvenement').addEventListener('click', async () => {
+    const evenementId = document.getElementById('evenementId').value;
+    if (evenementId) {
+        await modifierEvenement(evenementId);
+    } else {
+        await creerUnEvenement();
+    }
+});
+
+async function creerUnEvenement() {
+    const form = document.getElementById("postEvenementForm");
+    const formData = new FormData(form);
+    const nom = formData.get('nomEvenement');
+    const description = formData.get('descriptionEvenement');
+    const image_data = await getBase64Image(formData.get('imageEvenement'));
+
+    if (!nom || !description) {
+        alert("Tous les champs doivent être remplis.");
+        return;
+    }
+
+    try {
+        await createEvenement(nom, description , image_data);
+        alert("La bière a été créée avec succès.");
+        voirEvenement();
+    } catch (error) {
+        alert("Erreur lors de la création de la bière.");
+        console.error(error);
+    }
+}
+
+async function createEvenement(nom, description , image_data) {
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+        "nom": nom,
+        "description": description,
+        "image_data": image_data,
+    });
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+    };
+
+    try {
+        const response = await fetch("https://127.0.0.1:8000/api/evenement", requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.text();
+        console.log(result);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function modifierEvenement(evenementId) {
+    const form = document.getElementById("postEvenementForm");
+    const formData = new FormData(form);
+    const nom = formData.get("nomEvenement");
+    const description = formData.get("descriptionEvenement");
+    const image_data = await getBase64Image(formData.get("imageEvenement"));
+
+    if (!nom || !description
+    ) {
+        alert("Tous les champs doivent être remplis.");
+        return;
+    }
+
+    try {
+        await updateEvenement(evenementId, nom, description );
+        alert("L'évènement a été modifiée avec succès.");
+        voirEvenement();
+    } catch (error) {
+        alert("Erreur lors de la modification de l'évènement.");
+        console.error(error);
+    }
+}
+
+async function updateEvenement(evenementId, nom, description) {
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+        "nom": nom,
+        "description": description,
+    });
+
+    const requestOptions = {
+        method: "PUT",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+    };
+
+    try {
+        const response = await fetch(`https://127.0.0.1:8000/api/evenement/${evenementId}`, requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.text();
+        console.log(result);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function voirEvenement() {
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("Content-Type", "application/json");
+
+    const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+    };
+
+    try {
+        const response = await fetch("https://127.0.0.1:8000/api/evenement/get", requestOptions);
+        if (!response.ok) {
+            throw new Error('Echec concernant le Fetch de evenement');
+        }
+        const result = await response.json();
+
+        let content = '';
+        result.forEach(item => {
+            content += `
+                <div class="p-5">
+                    <h1>${escapeHtml(item.nom)}</h1>
+                    <p>${escapeHtml(item.description)}</p>
+                    <img src="data:image/jpeg;base64,${escapeHtml(item.image_data)}" class="rounded img-fluid w-50" alt="Image de ${escapeHtml(item.nom)}">
+                    <div class="py-2">
+                    <button class="btn btn-primary" onclick="editEvenement('${item.id}', \`${escapeHtml(item.nom)}\`, \`${escapeHtml(item.description)}\`, '${item.image_data}')">Modifier</button>
+                    <button class="btn btn-danger" onclick="validerSuppression('${item.id}')">Supprimer</button>
+                    </div>
+                </div>`;
+        });
+        document.getElementById("GetEvenement").innerHTML = content;
+    } catch (error) {
+        console.error('Error:', error);
+        console.log("Impossible de récupérer les informations des événements");
+    }
+}
+
+function editEvenement(id, nom, description) {
+    document.getElementById('evenementId').value = id;
+    document.getElementById('nomEvenement').value = nom;
+    document.getElementById('descriptionEvenement').value = description;
+}
+
+function validerSuppression(evenementId) {
+    const deleteModal = new bootstrap.Modal(document.getElementById('validerSuppressionModal'));
+    document.getElementById('validerSuppressionButton').onclick = async () => {
+        await supprimerEvenement(evenementId);
+        deleteModal.hide();
+        voirEvenement(); 
+    };
+    deleteModal.show();
+}
+
+async function supprimerEvenement(evenementId) {
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("Content-Type", "application/json");
+
+    const requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+
+    try {
+        const response = await fetch(`https://127.0.0.1:8000/api/evenement/${evenementId}`, requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.text();
+        console.log(result);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
