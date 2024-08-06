@@ -32,9 +32,7 @@ async function voirEvenement() {
                 content += `                            
                     <div>
                         <h1 class="pb-5">${item.nom}</h1>
-                      
                         <img src="data:image/jpeg;base64,${item.image_data}" class="rounded img-fluid w-50" alt="Image de ${item.id}" >
-                 
                         <p class="pt-5">${item.description}</p>
                     </div> `;
         });     

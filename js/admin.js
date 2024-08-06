@@ -503,7 +503,7 @@ async function voirBiere() {
                 <div class="p-5">
                     <h1>${escapeHtml(item.nom)}</h1>
                     <p>${escapeHtml(item.description)}</p>
-                    <p>${escapeHtml(item.taux_alcool)}</p>
+                    <p>${escapeHtml(item.taux_alcool)}</p>         
                     <img src="data:image/jpeg;base64,${escapeHtml(item.image_data)}" class="rounded img-fluid w-50" alt="Image de ${escapeHtml(item.nom)}">
                     <div class="py-2">
                     <button class="btn btn-primary" onclick="editBiere('${item.id}', \`${escapeHtml(item.nom)}\`, \`${escapeHtml(item.description)}\`, \`${escapeHtml(item.taux_alcool)}\`, '${item.image_data}')">Modifier</button>
@@ -518,7 +518,7 @@ async function voirBiere() {
     }
 }
 
-function editBiere(id, nom, description, taux_alcool ,image_data) {
+function editBiere(id, nom, description, taux_alcool) {
     document.getElementById('biereId').value = id;
     document.getElementById('nomBiere').value = nom;
     document.getElementById('descriptionBiere').value = description;
