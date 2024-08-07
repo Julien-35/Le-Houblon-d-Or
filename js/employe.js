@@ -101,6 +101,8 @@ async function voirAvis() {
   }
 }
 
+
+// Method GET et Put sur les services
 const service=document.getElementById("GetService");
 
 if (document.readyState === "loading") {
@@ -110,66 +112,12 @@ if (document.readyState === "loading") {
     voirService();
   }
 
-
-
   document.getElementById('ajoutService').addEventListener('click', async () => {
     const serviceId = document.getElementById('serviceId').value;
     if (serviceId) {
         await modifierService(serviceId);
-    } else {
-        await creerUnService();
-    }
+    } 
 });
-
-async function creerUnService() {
-    const form = document.getElementById("postServiceForm");
-    const formData = new FormData(form);
-    const nom = formData.get('nom');
-    const description = formData.get('description');
-
-    if (!nom || !description) {
-        alert("Les champs nom et description ne peuvent pas être vides");
-        return;
-    }
-
-    try {
-        await createService(nom, description);
-        alert("Le service a été créé avec succès");
-        voirService();
-    } catch (error) {
-        alert("Erreur lors de la création du service");
-        console.error(error);
-    }
-}
-
-async function createService(nom, description) {
-    const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify({
-        "nom": nom,
-        "description": description
-    });
-
-    const requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow"
-    };
-
-    try {
-        const response = await fetch(`https://127.0.0.1:8000/api/service`, requestOptions);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const result = await response.text();
-        console.log(result);
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
 
 async function modifierService(serviceId) {
     const form = document.getElementById("postServiceForm");
