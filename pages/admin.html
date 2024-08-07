@@ -130,6 +130,7 @@ Inscrire un Utilisateur      </button></p>
   
     <label for="imageEvenement">Image :</label>
     <input type="file" class="form-control" id="imageEvenement" name="imageEvenement" accept="image/*" required><br><br>
+    
   
     <button type="button" class="btn btn-primary" id="ajoutEvenement">Envoyer</button>
     <input type="hidden" id="evenementId" name="evenementId">  </form>
@@ -171,53 +172,57 @@ Inscrire un Utilisateur      </button></p>
   <!-- Formulaire pour créer ou modifier une bière -->
 
       <!-- Formulaire pour créer ou modifier une bière -->
-      <form id="postBiereForm" class="container text-center border border-primary rounded py-5" >
+      <form id="postBiereForm" class="container text-center border border-primary rounded py-5">
         <div class="form-group">
             <label for="nomBiere" class="pb-1">Nom de la bière</label>
             <input type="text" class="form-control" id="nomBiere" name="nomBiere" placeholder="Location tireuse à bière" required>
         </div>
-
+    
         <div class="form-group py-5">
             <label for="descriptionBiere" class="pb-1">Description de la bière</label>
             <textarea class="form-control" id="descriptionBiere" name="descriptionBiere" rows="6" required></textarea>
         </div>
-
-      <div class="form-group">
-          <label for="taux_alcool" class="pb-1">Taux d'alcool</label>
-          <input type="text" class="form-control" id="taux_alcool" name="taux_alcool" placeholder="6°" required>
-      </div>
-
-      <div class="form-group">
-        <label for="origine" class="pb-1">Origine de la bière</label>
-        <input type="text" class="form-control" id="origine" name="origine" placeholder="Allemande" required>
-    </div>
-
-    <div class="form-group">
-        <label for="quantite" class="pb-1">Quantité en stock</label>
-        <input type="text" class="form-control" id="quantite" name="quantite" placeholder="15 bouteilles" required>
-    </div>
-
-    <div class="form-group">
-        <label for="nom" class="pb-1">Catégorie</label>
-        <input type="text" class="form-control" id="nom" name="nom" placeholder="Blonde" required>
-    </div>
-
-      <label for="imageBiere">Image :</label>
-      <input type="file" class="form-control" id="imageBiere" name="imageBiere" accept="image/*" required><br><br>
-
-
+    
+        <div class="form-group">
+            <label for="taux_alcool" class="pb-1">Taux d'alcool</label>
+            <input type="text" class="form-control" id="taux_alcool" name="taux_alcool" placeholder="6°" required>
+        </div>
+    
+        <div class="form-group">
+            <label for="origineBiere" class="pb-1">Origine de la bière</label>
+            <select class="form-control" id="origineBiere" name="origineBiere" required>
+                <!-- Options will be loaded dynamically -->
+            </select>
+        </div>
+    
+        <div class="form-group">
+            <label for="stockBiere" class="pb-1">Quantité en stock</label>
+            <input type="text" class="form-control" id="stockBiere" name="stockBiere" placeholder="15 bouteilles" required>
+        </div>
+    
+        <div class="form-group">
+            <label for="categorieBiere" class="pb-1">Catégorie</label>
+            <select class="form-control" id="categorieBiere" name="categorieBiere" required>
+                <!-- Options will be loaded dynamically -->
+            </select>
+        </div>
+    
+        <label for="imageBiere">Image :</label>
+        <input type="file" class="form-control" id="imageBiere" name="imageBiere" accept="image/*" required><br><br>
+    
         <button type="button" class="btn btn-primary" id="ajoutBiere">Envoyer</button>
         <input type="hidden" id="biereId" name="biereId">
     </form>
+    
 </div>
 
 
 <!-- Modal de confirmation de suppression -->
-<div class="modal fade" id="validerSuppressionModal" tabindex="-1" aria-labelledby="validerSuppressionModalLabel" aria-hidden="true">
+<div class="modal fade" id="validerSuppressionBiereModal" tabindex="-1" aria-labelledby="validerSuppressionBiereModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="validerSuppressionModalLabel">Confirmation de suppression</h5>
+                <h5 class="modal-title" id="validerSuppressionBiereModalLabel">Confirmation de suppression</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -225,7 +230,7 @@ Inscrire un Utilisateur      </button></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-danger" id="validerSuppressionButton">Supprimer</button>
+                <button type="button" class="btn btn-danger" id="validerSuppressionBiereButton">Supprimer</button>
             </div>
         </div>
     </div>

@@ -350,17 +350,90 @@ async function InscrireUtilisateur(event) {
 // Methods CRUD pour les bières 
 
 const biere=document.getElementById("GetBiere");
+const origineBiere=document.getElementById("origineBiere");
+const categorieBiere=document.getElementById("categorieBiere");
+
+if (document.readyState === "loading") {
+    // Loading hasn't finished yet
+    categorieBiere.addEventListener('DOMContentLoaded', chargerOptions);
+    origineBiere.addEventListener('DOMContentLoaded', chargerOptions);
+
+  } else {
+    chargerOptions();
+  }
 
 if (document.readyState === "loading") {
     // Loading hasn't finished yet
     biere.addEventListener('DOMContentLoaded', voirBiere);
   } else {
     voirBiere();
-  }
+  };
 
 
 
-  document.addEventListener('DOMContentLoaded', voirBiere);
+
+
+document.getElementById('ajoutBiere').addEventListener('click', async () => {
+    const biereId = document.getElementById('biereId').value;
+    if (biereId) {
+        await modifierBiere(biereId);
+    } else {
+        await creerUneBiere();
+    }
+});
+
+document.addEventListener('DOMContentLoaded', chargerOptions);
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await chargerOptions();
+    await voirBiere();
+});
+
+async function chargerOptions() {
+    try {
+        await loadOptions("origineBiere", "https://127.0.0.1:8000/api/origine/get");
+        await loadOptions("categorieBiere", "https://127.0.0.1:8000/api/categorie/get");
+    } catch (error) {
+        console.error('Erreur lors du chargement des options:', error);
+        alert('Impossible de charger les options.');
+    }
+}
+
+async function loadOptions(selectId, url) {
+    const myHeaders = new Headers({
+        "X-AUTH-TOKEN": "38f1c426526d1aeebb80d777b8733f1ef09fc484",
+        "Content-Type": "application/json"
+    });
+
+    try {
+        const response = await fetch(url, { method: 'GET', headers: myHeaders });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const data = await response.json();
+        const selectElement = document.getElementById(selectId);
+        
+        if (!selectElement) {
+            console.error(`Element with id ${selectId} not found.`);
+            return;
+        }
+
+        // Vider les options existantes pour éviter les doublons
+        selectElement.innerHTML = '';
+
+        data.forEach(item => {
+            const option = document.createElement("option");
+            option.value = item.id; // Assurez-vous que item.id existe
+            option.textContent = item.label || item.nom || 'No label'; // Utiliser item.label ou item.nom
+            selectElement.appendChild(option);
+        });
+
+        console.log(`Options loaded for ${selectId}:`, data);
+
+    } catch (error) {
+        console.error('Error fetching options:', error);
+        alert(`Impossible de charger les options pour ${selectId}.`);
+    }
+}
 
 document.getElementById('ajoutBiere').addEventListener('click', async () => {
     const biereId = document.getElementById('biereId').value;
@@ -377,15 +450,18 @@ async function creerUneBiere() {
     const nom = formData.get('nomBiere');
     const description = formData.get('descriptionBiere');
     const taux_alcool = formData.get('taux_alcool');
+    const origine = formData.get('origineBiere');
+    const stock = formData.get('stockBiere');
+    const categorie = formData.get('categorieBiere');
     const image_data = await getBase64Image(formData.get('imageBiere'));
 
-    if (!nom || !description || !taux_alcool  || !image_data) {
+    if (!nom || !description || !taux_alcool || !origine || !stock || !categorie || !image_data) {
         alert("Tous les champs doivent être remplis.");
         return;
     }
 
     try {
-        await createBiere(nom, description, taux_alcool , image_data);
+        await createBiere(nom, description, taux_alcool, origine, stock, categorie, image_data);
         alert("La bière a été créée avec succès.");
         voirBiere();
     } catch (error) {
@@ -394,15 +470,22 @@ async function creerUneBiere() {
     }
 }
 
-async function createBiere(nom, description, taux_alcool , image_data) {
-    const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
-    myHeaders.append("Content-Type", "application/json");
+
+async function createBiere(nom, description, taux_alcool, origine, categorie, image_data) {
+    const myHeaders = new Headers({
+        "X-AUTH-TOKEN": "38f1c426526d1aeebb80d777b8733f1ef09fc484",
+        "Content-Type": "application/json"
+    });
+
+    const stock = { quantite: '0' };
 
     const raw = JSON.stringify({
         "nom": nom,
         "description": description,
         "taux_alcool": taux_alcool,
+        "origine": origine,
+        "stock": stock,  // Associer le nouvel objet Stock
+        "categorie": categorie,
         "image_data": image_data,
     });
 
@@ -425,21 +508,26 @@ async function createBiere(nom, description, taux_alcool , image_data) {
     }
 }
 
+
+
 async function modifierBiere(biereId) {
     const form = document.getElementById("postBiereForm");
     const formData = new FormData(form);
     const nom = formData.get("nomBiere");
     const description = formData.get("descriptionBiere");
     const taux_alcool = formData.get("taux_alcool");
+    const origine = formData.get('origineBiere');
+    const stock = formData.get('stockBiere');
+    const categorie = formData.get('categorieBiere');
     const image_data = await getBase64Image(formData.get("imageBiere"));
 
-    if (!nom || !description || !taux_alcool  || !image_data) {
+    if (!nom || !description || !taux_alcool || !origine || !stock || !categorie || !image_data) {
         alert("Tous les champs doivent être remplis.");
         return;
     }
 
     try {
-        await updateBiere(biereId, nom, description, taux_alcool , image_data);
+        await updateBiere(biereId, nom, description, taux_alcool, origine, stock, categorie, image_data);
         alert("La bière a été modifiée avec succès.");
         voirBiere();
     } catch (error) {
@@ -448,15 +536,19 @@ async function modifierBiere(biereId) {
     }
 }
 
-async function updateBiere(biereId, nom, description, taux_alcool , image_data) {
-    const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
-    myHeaders.append("Content-Type", "application/json");
+async function updateBiere(biereId, nom, description, taux_alcool, origine, stock, categorie, image_data) {
+    const myHeaders = new Headers({
+        "X-AUTH-TOKEN": "38f1c426526d1aeebb80d777b8733f1ef09fc484",
+        "Content-Type": "application/json"
+    });
 
     const raw = JSON.stringify({
         "nom": nom,
         "description": description,
         "taux_alcool": taux_alcool,
+        "origine": origine,
+        "stock": stock,
+        "categorie": categorie,
         "image_data": image_data,
     });
 
@@ -480,9 +572,10 @@ async function updateBiere(biereId, nom, description, taux_alcool , image_data) 
 }
 
 async function voirBiere() {
-    const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
-    myHeaders.append("Content-Type", "application/json");
+    const myHeaders = new Headers({
+        "X-AUTH-TOKEN": "38f1c426526d1aeebb80d777b8733f1ef09fc484",
+        "Content-Type": "application/json"
+    });
 
     const requestOptions = {
         method: "GET",
@@ -500,63 +593,71 @@ async function voirBiere() {
         let content = '';
         result.forEach(item => {
             content += `
-                <div class="p-5">
-                    <h1>${escapeHtml(item.nom)}</h1>
-                    <p>${escapeHtml(item.description)}</p>
-                    <p>${escapeHtml(item.taux_alcool)}</p>         
-                    <img src="data:image/jpeg;base64,${escapeHtml(item.image_data)}" class="rounded img-fluid w-50" alt="Image de ${escapeHtml(item.nom)}">
-                    <div class="py-2">
-                    <button class="btn btn-primary" onclick="editBiere('${item.id}', \`${escapeHtml(item.nom)}\`, \`${escapeHtml(item.description)}\`, \`${escapeHtml(item.taux_alcool)}\`, '${item.image_data}')">Modifier</button>
-                    <button class="btn btn-danger" onclick="validerSuppression('${item.id}')">Supprimer</button>
-                    </div>
-                </div>`;
+            <div class="p-5">
+                <h1>${escapeHtml(item.nom ?? '')}</h1>
+                <p>${escapeHtml(item.origine ?? '')}</p>         
+                <p>${escapeHtml(item.categorie ?? '')}</p>     
+                <p>${escapeHtml(item.description ?? '')}</p>
+                <p>${escapeHtml(item.taux_alcool ?? 'N/A')}</p>         
+                <img src="data:image/jpeg;base64,${escapeHtml(item.image_data ?? '')}" class="rounded img-fluid w-50" alt="Image de ${escapeHtml(item.nom ?? '')}">
+                <div class="py-2">
+                <p>${escapeHtml(item.stock ?? 'Stock inconnu')}</p>                                                                                  
+                <button class="btn btn-primary" onclick="editBiere('${item.id}', \`${escapeHtml(item.nom ?? '')}\`, \`${escapeHtml(item.description ?? '')}\`, \`${escapeHtml(item.taux_alcool ?? 'N/A')}\`, '${item.image_data}', '${escapeHtml(item.origine ?? 'Origine inconnue')}', '${escapeHtml(item.stock ?? 'Stock inconnu')}', '${escapeHtml(item.categorie ?? 'Catégorie inconnue')}')">Modifier</button>
+                <button class="btn btn-danger" onclick="validerSuppressionBiere('${item.id}')">Supprimer</button>
+                </div>
+            </div>`;
         });
         document.getElementById("GetBiere").innerHTML = content;
     } catch (error) {
         console.error('Error:', error);
-        console.log("Impossible de récupérer les informations des événements");
+        console.log("Impossible de récupérer les informations des bières");
     }
 }
 
-function editBiere(id, nom, description, taux_alcool) {
-    document.getElementById('biereId').value = id;
-    document.getElementById('nomBiere').value = nom;
-    document.getElementById('descriptionBiere').value = description;
-    document.getElementById('taux_alcool').value = taux_alcool;
-}
 
-function validerSuppression(biereId) {
-    const deleteModal = new bootstrap.Modal(document.getElementById('validerSuppressionModal'));
-    document.getElementById('validerSuppressionButton').onclick = async () => {
-        await supprimerBiere(biereId);
-        deleteModal.hide();
-        voirBiere(); 
-    };
-    deleteModal.show();
-}
+    function editBiere(id, nom, description, taux_alcool, image_data, origine, stock, categorie) {
+        document.getElementById('biereId').value = id;
+        document.getElementById('nomBiere').value = nom;
+        document.getElementById('descriptionBiere').value = description;
+        document.getElementById('taux_alcool').value = taux_alcool;
+        document.getElementById('origineBiere').value = origine;
+        document.getElementById('stockBiere').value = stock;
+        document.getElementById('categorieBiere').value = categorie;
+    }
 
-async function supprimerBiere(biereId) {
-    const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
-    myHeaders.append("Content-Type", "application/json");
-
-    const requestOptions = {
-        method: "DELETE",
-        headers: myHeaders,
-        redirect: "follow"
-    };
-
-    try {
-        const response = await fetch(`https://127.0.0.1:8000/api/biere/${biereId}`, requestOptions);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+    function validerSuppressionBiere(biereId) {
+        const deleteModal = new bootstrap.Modal(document.getElementById('validerSuppressionBiereModal'));
+        document.getElementById('validerSuppressionBiereButton').onclick = async () => {
+            await supprimerBiere(biereId);
+            deleteModal.hide();
+            voirBiere(); 
+        };
+        deleteModal.show();
+    }
+    
+    async function supprimerBiere(biereId) {
+        const myHeaders = new Headers({
+            "X-AUTH-TOKEN": "38f1c426526d1aeebb80d777b8733f1ef09fc484",
+            "Content-Type": "application/json"
+        });
+    
+        const requestOptions = {
+            method: "DELETE",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+    
+        try {
+            const response = await fetch(`https://127.0.0.1:8000/api/biere/${biereId}`, requestOptions);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const result = await response.text();
+            console.log(result);
+        } catch (error) {
+            console.error('Error:', error);
         }
-        const result = await response.text();
-        console.log(result);
-    } catch (error) {
-        console.error('Error:', error);
     }
-}
 
 // Fonction utilitaire pour convertir une image en base64
 function getBase64Image(file) {
@@ -570,6 +671,9 @@ function getBase64Image(file) {
 
 
 function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') {
+        return ''; // ou une chaîne par défaut
+    }
     return unsafe
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
