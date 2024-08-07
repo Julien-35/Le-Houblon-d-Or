@@ -140,10 +140,10 @@ async function voirService() {
         result.forEach(item => {
             content += `
                 <div class="py-5">
-                    <h1>${item.nom}</h1>
-                    <p>${item.description}</p>
-                    <button class="btn btn-primary" onclick="editService('${item.id}', '${item.nom}', '${item.description}')">Modifier</button>
-                    <button class="btn btn-danger" onclick="validerSuppression('${item.id}')">Supprimer</button>
+                    <h1>${escapeHtml(item.nom ?? '')}</h1>
+                    <p>${escapeHtml(item.description ?? '')}</p>
+                    <button class="btn btn-primary" onclick="editService('${item.id}', \`${escapeHtml(item.nom)}\`, \`${escapeHtml(item.description)}\`)">Modifier</button>
+                    <button class="btn btn-danger" onclick="validerSuppressionService('${item.id}')">Supprimer</button>
                 </div>`;
         });
         document.getElementById("GetService").innerHTML = content;
@@ -160,10 +160,10 @@ function editService(id, nom, description) {
 }
 
 
-function validerSuppression(serviceId) {
+function validerSuppressionService(serviceId) {
     // Affiche la modal de confirmation
-    const deleteModal = new bootstrap.Modal(document.getElementById('validerSuppressionModal'));
-    document.getElementById('validerSuppressionButton').onclick = async () => {
+    const deleteModal = new bootstrap.Modal(document.getElementById('validerSuppressionServiceModal'));
+    document.getElementById('validerSuppressionServiceButton').onclick = async () => {
         await supprimerService(serviceId);
         deleteModal.hide();
         voirService(); // Actualiser la liste des services après la suppression

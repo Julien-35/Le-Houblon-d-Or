@@ -1,6 +1,6 @@
 
 
-    <div class="container text-center text-primary">
+    <div class="container text-center">
 
 
         <h2 class="accordion-header pt-5" id="flush-headingAvis">
@@ -15,6 +15,37 @@
         </div>
       </div>
 
+
+
+      
+    <div class="container text-center">
+
+
+      <h2 class="accordion-header pt-5" id="flush-headingService">
+        <button class="btn btn-primary collapsed fs-4 mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseService" aria-expanded="false" aria-controls="flush-collapseService">
+          Voir tout les services
+        </button>
+      </h2>
+      <div id="flush-collapseService" class="accordion-collapse collapse" aria-labelledby="flush-headingService" data-bs-parent="#accordionFlushExample">
+        <div class="container text-center d-flex justify-content-evenly">
+          <div id="GetService" class="row row-cols-1 row-cols-lg-4 grid gap-2 py-5 d-flex justify-content-center"></div>
+      </div>
+
+<form id="postServiceForm" class="container text-center border border-primary rounded py-5" >
+  <div class="form-group">
+      <label for="nom" class="pb-1">Nom du service</label>
+      <input type="text" class="form-control" id="nom" name="nom" placeholder="Location tireuse à bière" required>
+  </div>
+
+  <div class="form-group py-5">
+      <label for="description" class="pb-1">Votre description</label>
+      <textarea class="form-control" id="description" name="description" rows="6" required></textarea>
+  </div>
+  <button type="button" class="btn btn-primary" id="ajoutService">Envoyer</button>
+  <input type="hidden" id="serviceId" name="serviceId">
+</form>
+      </div>
+    </div>
 
 
 
