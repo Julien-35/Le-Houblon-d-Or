@@ -30,9 +30,9 @@ async function voirBiere() {
         let content = '';
         result.forEach(item => {
                 content += `                            
-                    <div>
-                        <h1>${item.nom}</h1>
-                        <p>${item.origine}</p>         
+                    <div class="container border border-primary rounded p-2">
+                      <h1>${item.nom}</h1>
+                        <p class='pt-5'>${item.origine}</p>   
                         <p>${item.categorie}</p>                                                      
                         <p>${item.description}</p>
                         <p>${item.taux_alcool}</p>
