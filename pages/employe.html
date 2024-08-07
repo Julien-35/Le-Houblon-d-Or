@@ -31,20 +31,54 @@
           <div id="GetService" class="row row-cols-1 row-cols-lg-4 grid gap-2 py-5 d-flex justify-content-center"></div>
       </div>
 
-<form id="postServiceForm" class="container text-center border border-primary rounded py-5" >
-  <div class="form-group">
-      <label for="nom" class="pb-1">Nom du service</label>
-      <input type="text" class="form-control" id="nom" name="nom" placeholder="Location tireuse à bière" required>
-  </div>
+        <form id="postServiceForm" class="container text-center border border-primary rounded py-5" >
+          <div class="form-group">
+              <label for="nom" class="pb-1">Nom du service</label>
+              <input type="text" class="form-control" id="nom" name="nom" placeholder="Location tireuse à bière" required>
+          </div>
 
-  <div class="form-group py-5">
-      <label for="description" class="pb-1">Votre description</label>
-      <textarea class="form-control" id="description" name="description" rows="6" required></textarea>
-  </div>
-  <button type="button" class="btn btn-primary" id="ajoutService">Envoyer</button>
-  <input type="hidden" id="serviceId" name="serviceId">
-</form>
+          <div class="form-group py-5">
+              <label for="description" class="pb-1">Votre description</label>
+              <textarea class="form-control" id="description" name="description" rows="6" required></textarea>
+          </div>
+          <button type="button" class="btn btn-primary" id="ajoutService">Envoyer</button>
+          <input type="hidden" id="serviceId" name="serviceId">
+        </form>
       </div>
+
+
+
+
+      <div class="container text-center">
+
+
+        <h2 class="accordion-header pt-5" id="flush-headingEvenement">
+          <button class="btn btn-primary collapsed fs-4 mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEvenement" aria-expanded="false" aria-controls="flush-collapseEvenement">
+            Voir tout les évenements
+          </button>
+        </h2>
+        <div id="flush-collapseEvenement" class="accordion-collapse collapse" aria-labelledby="flush-headingEvenement" data-bs-parent="#accordionFlushExample">
+          <div class="container text-center d-flex justify-content-evenly">
+            <div id="GetEvenement" class="row row-cols-1 row-cols-lg-4 grid gap-2 py-5 d-flex justify-content-center"></div>
+        </div>
+      <!-- Formulaire pour créer ou modifier un l'évenement -->
+    
+      <form id="postEvenementForm" class="container text-center border border-primary rounded py-5">
+        <label for="nomEvenement">Nom :</label>
+        <input type="text" class="form-control" id="nomEvenement" name="nomEvenement" required><br><br>
+      
+        <label for="descriptionEvenement">Description :</label>
+        <textarea id="descriptionEvenement" class="form-control" name="descriptionEvenement" rows="6"></textarea><br><br>
+      
+        <label for="imageEvenement">Image :</label>
+        <input type="file" class="form-control" id="imageEvenement" name="imageEvenement" accept="image/*" required><br><br>
+        
+      
+        <button type="button" class="btn btn-primary" id="ajoutEvenement">Envoyer</button>
+        <input type="hidden" id="evenementId" name="evenementId">  
+      </form>
+      
+    </div>
     </div>
 
 

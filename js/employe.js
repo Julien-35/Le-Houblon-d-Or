@@ -221,3 +221,135 @@ function escapeHtml(unsafe) {
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
 }
+
+
+// Method Get et Put sur les évènements 
+
+// Fonction utilitaire pour convertir une image en base64
+function getBase64Image(file) {
+  return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = error => reject(error);
+  });
+}
+
+
+
+const evenement=document.getElementById("GetEvenement");
+
+if (document.readyState === "loading") {
+    // Loading hasn't finished yet
+    evenement.addEventListener('DOMContentLoaded', voirEvenement);
+  } else {
+    voirEvenement();
+  }
+
+
+
+document.addEventListener('DOMContentLoaded', voirEvenement);
+
+document.getElementById('ajoutEvenement').addEventListener('click', async () => {
+    const evenementId = document.getElementById('evenementId').value;
+    if (evenementId) {
+        await modifierEvenement(evenementId);
+    } 
+});
+
+
+
+async function modifierEvenement(evenementId) {
+    const form = document.getElementById("postEvenementForm");
+    const formData = new FormData(form);
+    const nom = formData.get("nomEvenement");
+    const description = formData.get("descriptionEvenement");
+    const image_data = await getBase64Image(formData.get("imageEvenement"));
+
+    if (!nom || !description
+    ) {
+        alert("Tous les champs doivent être remplis.");
+        return;
+    }
+
+    try {
+        await updateEvenement(evenementId, nom, description );
+        alert("L'évènement a été modifiée avec succès.");
+        voirEvenement();
+    } catch (error) {
+        alert("Erreur lors de la modification de l'évènement.");
+        console.error(error);
+    }
+}
+
+async function updateEvenement(evenementId, nom, description) {
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+        "nom": nom,
+        "description": description,
+    });
+
+    const requestOptions = {
+        method: "PUT",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+    };
+
+    try {
+        const response = await fetch(`https://127.0.0.1:8000/api/evenement/${evenementId}`, requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.text();
+        console.log(result);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function voirEvenement() {
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("Content-Type", "application/json");
+
+    const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+    };
+
+    try {
+        const response = await fetch("https://127.0.0.1:8000/api/evenement/get", requestOptions);
+        if (!response.ok) {
+            throw new Error('Echec concernant le Fetch de evenement');
+        }
+        const result = await response.json();
+
+        let content = '';
+        result.forEach(item => {
+            content += `
+                <div class="p-5">
+                    <h1>${escapeHtml(item.nom)}</h1>
+                    <p>${escapeHtml(item.description)}</p>
+                    <img src="data:image/jpeg;base64,${escapeHtml(item.image_data)}" class="rounded img-fluid w-50" alt="Image de ${escapeHtml(item.nom)}">
+                    <div class="py-2">
+                    <button class="btn btn-primary" onclick="editEvenement('${item.id}', \`${escapeHtml(item.nom)}\`, \`${escapeHtml(item.description)}\`, '${item.image_data}')">Modifier</button>
+                    </div>
+                </div>`;
+        });
+        document.getElementById("GetEvenement").innerHTML = content;
+    } catch (error) {
+        console.error('Error:', error);
+        console.log("Impossible de récupérer les informations des événements");
+    }
+}
+
+function editEvenement(id, nom, description) {
+    document.getElementById('evenementId').value = id;
+    document.getElementById('nomEvenement').value = nom;
+    document.getElementById('descriptionEvenement').value = description;
+}
