@@ -41,7 +41,7 @@ async function creerUnService() {
 
 async function createService(nom, description) {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("X-AUTH-TOKEN", "6e406826e6f00ad66b88299970102d0e675c7062");
     myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
@@ -91,7 +91,7 @@ async function modifierService(serviceId) {
 
 async function updateService(serviceId, nom, description) {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("X-AUTH-TOKEN", "6e406826e6f00ad66b88299970102d0e675c7062");
     myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
@@ -120,7 +120,7 @@ async function updateService(serviceId, nom, description) {
 
 async function voirService() {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("X-AUTH-TOKEN", "6e406826e6f00ad66b88299970102d0e675c7062");
     myHeaders.append("Content-Type", "application/json");
 
     const requestOptions = {
@@ -173,7 +173,7 @@ function validerSuppressionService(serviceId) {
 
 async function supprimerService(serviceId) {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("X-AUTH-TOKEN", "6e406826e6f00ad66b88299970102d0e675c7062");
     myHeaders.append("Content-Type", "application/json");
 
     const requestOptions = {
@@ -401,7 +401,7 @@ async function chargerOptions() {
 
 async function loadOptions(selectId, url) {
     const myHeaders = new Headers({
-        "X-AUTH-TOKEN": "38f1c426526d1aeebb80d777b8733f1ef09fc484",
+        "X-AUTH-TOKEN": "6e406826e6f00ad66b88299970102d0e675c7062",
         "Content-Type": "application/json"
     });
 
@@ -473,7 +473,7 @@ async function creerUneBiere() {
 
 async function createBiere(nom, description, taux_alcool, origine, categorie, image_data) {
     const myHeaders = new Headers({
-        "X-AUTH-TOKEN": "38f1c426526d1aeebb80d777b8733f1ef09fc484",
+        "X-AUTH-TOKEN": "6e406826e6f00ad66b88299970102d0e675c7062",
         "Content-Type": "application/json"
     });
 
@@ -538,7 +538,7 @@ async function modifierBiere(biereId) {
 
 async function updateBiere(biereId, nom, description, taux_alcool, origine, stock, categorie, image_data) {
     const myHeaders = new Headers({
-        "X-AUTH-TOKEN": "38f1c426526d1aeebb80d777b8733f1ef09fc484",
+        "X-AUTH-TOKEN": "6e406826e6f00ad66b88299970102d0e675c7062",
         "Content-Type": "application/json"
     });
 
@@ -573,7 +573,7 @@ async function updateBiere(biereId, nom, description, taux_alcool, origine, stoc
 
 async function voirBiere() {
     const myHeaders = new Headers({
-        "X-AUTH-TOKEN": "38f1c426526d1aeebb80d777b8733f1ef09fc484",
+        "X-AUTH-TOKEN": "6e406826e6f00ad66b88299970102d0e675c7062",
         "Content-Type": "application/json"
     });
 
@@ -637,7 +637,7 @@ async function voirBiere() {
     
     async function supprimerBiere(biereId) {
         const myHeaders = new Headers({
-            "X-AUTH-TOKEN": "38f1c426526d1aeebb80d777b8733f1ef09fc484",
+            "X-AUTH-TOKEN": "6e406826e6f00ad66b88299970102d0e675c7062",
             "Content-Type": "application/json"
         });
     
@@ -732,7 +732,7 @@ async function creerUnEvenement() {
 
 async function createEvenement(nom, description , image_data) {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("X-AUTH-TOKEN", "6e406826e6f00ad66b88299970102d0e675c7062");
     myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
@@ -785,7 +785,7 @@ async function modifierEvenement(evenementId) {
 
 async function updateEvenement(evenementId, nom, description) {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("X-AUTH-TOKEN", "6e406826e6f00ad66b88299970102d0e675c7062");
     myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
@@ -814,7 +814,7 @@ async function updateEvenement(evenementId, nom, description) {
 
 async function voirEvenement() {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("X-AUTH-TOKEN", "6e406826e6f00ad66b88299970102d0e675c7062");
     myHeaders.append("Content-Type", "application/json");
 
     const requestOptions = {
@@ -868,7 +868,7 @@ function validerSuppression(evenementId) {
 
 async function supprimerEvenement(evenementId) {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("X-AUTH-TOKEN", "6e406826e6f00ad66b88299970102d0e675c7062");
     myHeaders.append("Content-Type", "application/json");
 
     const requestOptions = {

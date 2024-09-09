@@ -41,7 +41,7 @@ async function creerUnService() {
 
 async function createService(nom, description) {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("X-AUTH-TOKEN", "6e406826e6f00ad66b88299970102d0e675c7062");
     myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
@@ -91,7 +91,7 @@ async function modifierService(serviceId) {
 
 async function updateService(serviceId, nom, description) {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("X-AUTH-TOKEN", "6e406826e6f00ad66b88299970102d0e675c7062");
     myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
@@ -120,7 +120,7 @@ async function updateService(serviceId, nom, description) {
 
 async function voirService() {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("X-AUTH-TOKEN", "6e406826e6f00ad66b88299970102d0e675c7062");
     myHeaders.append("Content-Type", "application/json");
 
     const requestOptions = {
@@ -161,7 +161,7 @@ function editService(id, nom, description) {
 
 async function supprimerService(serviceId) {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("X-AUTH-TOKEN", "6e406826e6f00ad66b88299970102d0e675c7062");
     myHeaders.append("Content-Type", "application/json");
 
     const requestOptions = {
@@ -196,7 +196,7 @@ function validerSuppression(serviceId) {
 
 async function supprimerService(serviceId) {
     const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", "38f1c426526d1aeebb80d777b8733f1ef09fc484");
+    myHeaders.append("X-AUTH-TOKEN", "6e406826e6f00ad66b88299970102d0e675c7062");
     myHeaders.append("Content-Type", "application/json");
 
     const requestOptions = {
